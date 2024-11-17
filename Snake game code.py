@@ -7,10 +7,11 @@ pygame.font.init()
 
 
 To_Write=False
+#
 a=open("Highscore.bin","ab")
 a.close()
 a=open("Highscore.bin","rb")
-try :content=pickle.load(a)
+try:content=pickle.load(a)
 except:
     content=[]
     To_Write=True
@@ -21,11 +22,11 @@ if To_Write==True:
     a=open("Highscore.bin","wb")
     pickle.dump(content,a)
     a.close()
-
+print(content)
 
 used_font=pygame.font.SysFont("monospace",30)
 
-FPS=7
+FPS=10
 POINT=0
 body=[]
 VEL=15
@@ -42,14 +43,14 @@ pygame.display.update()
 clock = pygame.time.Clock()
 current_orint="L"
 
-POINT_IMAGE = pygame.image.load(os.path.join("assests","point.png"))
-SNAKE_FACE_IMAGE = pygame.image.load(os.path.join("assests","face.png"))
-SNAKE_BODY_IMAGE = pygame.image.load(os.path.join("assests","body.png"))
-BORDER_IMAGE= pygame.image.load(os.path.join("assests","border.png"))
-PLAY_IMAGE= pygame.image.load(os.path.join("assests","play.png"))
-HIGHSCORE_IMAGE= pygame.image.load(os.path.join("assests","Highscore_icon.png"))
-QUIT_IMAGE= pygame.image.load(os.path.join("assests","quit_icon.png"))
-BACK_IMAGE= pygame.image.load(os.path.join("assests","back.png"))
+POINT_IMAGE = pygame.image.load(os.path.join("snake","assests","point.png"))
+SNAKE_FACE_IMAGE = pygame.image.load(os.path.join("snake","assests","face.png"))
+SNAKE_BODY_IMAGE = pygame.image.load(os.path.join("snake","assests","body.png"))
+BORDER_IMAGE= pygame.image.load(os.path.join("snake","assests","border.png"))
+PLAY_IMAGE= pygame.image.load(os.path.join("snake","assests","play.png"))
+HIGHSCORE_IMAGE= pygame.image.load(os.path.join("snake","assests","Highscore_icon.png"))
+QUIT_IMAGE= pygame.image.load(os.path.join("snake","assests","quit_icon.png"))
+BACK_IMAGE= pygame.image.load(os.path.join("snake","assests","back.png"))
 BORDER_HORIZONTAL_IMAGE_USED=pygame.transform.rotate(pygame.transform.scale( BORDER_IMAGE,(20,600) ),270)
 BORDER_VERTICLE_IMAGE_USED=pygame.transform.rotate(pygame.transform.scale( BORDER_IMAGE,(20,600) ),0)
 SNAKE_BODY_IMAGE_USED=pygame.transform.rotate(pygame.transform.scale( SNAKE_BODY_IMAGE,(15,15) ),0)
@@ -114,7 +115,7 @@ def generate_point(snake_face,WALLS): #generates point object
                        
 def collision(snake_face,WALLS,POINT): # check collision between Face-Body,Face-Wall,FAce-Wall
 
-    global point_obj
+    global point_obj,FPS
     
     if point_obj.colliderect(snake_face):           #face-Point
         
@@ -177,9 +178,13 @@ def Highscore(back_button):#Writes Highscrore Window Based On Previous Attempts
 
 name_list=[]
 def main(WALL):#main thingy
+
+
     run=True
     POINT=0
     global SNAKE_FACE_IMAGE_USED,point_obj,current_orint,FPS,name_list
+
+
     
     high=False
     pause=False
@@ -188,6 +193,9 @@ def main(WALL):#main thingy
     game_start=False
     user_text=" |"
     temp_list=[]
+
+
+
     
     
 
@@ -210,7 +218,6 @@ def main(WALL):#main thingy
                         for i in user_text:
                             name_list.append(i)
                         
-                        FPS=15
                         game_start=True
                     elif len(user_text)<16:
                         user_text+=event.unicode
@@ -226,6 +233,7 @@ def main(WALL):#main thingy
                 user_text=""
                 for i in temp_list:
                     user_text+=i
+                print(user_text)
                 temp_list=[]
             else:
                 user_text=user_text+"|"
@@ -354,9 +362,11 @@ def post_game_stuff(file_name,user_text,POINT):
 
 
 if __name__=="__main__":
+    
     WALL=walls()
     name,POINT=main(WALL)
     post_game_stuff("Highscore.bin",name,POINT)
     
     
 
+#
